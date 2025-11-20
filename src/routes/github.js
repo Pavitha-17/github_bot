@@ -18,11 +18,11 @@ router.post("/", express.raw({ type: "application/json" }), (req, res) => {
         // Allow PING without signature
         if (eventType !== "ping") {
             if (!signature) {
-                console.log("❌ Missing signature");
+                console.log(" Missing signature");
                 return res.status(400).send("Missing signature");
             }
             if (signature !== computed) {
-                console.log("❌ Signature mismatch");
+                console.log("Signature mismatch");
                 return res.status(401).send("Invalid signature");
             }
         }
