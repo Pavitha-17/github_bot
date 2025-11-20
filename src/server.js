@@ -5,7 +5,7 @@ import githubRoutes from "./routes/github.js";
 dotenv.config();
 const app = express();
 
-// Raw body only for GitHub webhook
+
 app.use((req, res, next) => {
     if (req.originalUrl === "/webhook") {
         express.raw({ type: "application/json" })(req, res, next);
