@@ -15,7 +15,7 @@ router.post("/", express.raw({ type: "application/json" }), (req, res) => {
                   .update(req.body)
                   .digest("hex");
 
-
+        // Allow PING without signature
         if (eventType !== "ping") {
             if (!signature) {
                 console.log(" Missing signature");
