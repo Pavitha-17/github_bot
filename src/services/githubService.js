@@ -1,4 +1,4 @@
-import sendToCliq from "./cliqService.js";
+import sendToCliq from "../services/cliqService";
 
 export default function handleGitHubEvent(event, payload) {
     try {
