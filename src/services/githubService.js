@@ -5,7 +5,7 @@ export default function handleGitHubEvent(event, payload) {
         console.log("📩 Handling GitHub Event:", event);
 
         if (event === "push") {
-            const message = `🚀 *New Push Event*
+            const message = `*New Push Event*
 
 *Repository:* ${payload.repository.full_name}
 *Pushed by:* ${payload.pusher.name}
@@ -28,15 +28,15 @@ export default function handleGitHubEvent(event, payload) {
         }
 
         else if (event === "ping") {
-            console.log("🟢 Ping event received");
-            cliqService("🔔 GitHub webhook connected successfully!");
+            console.log("Ping event received");
+            cliqService(" GitHub webhook connected successfully!");
         }
 
         else {
-            cliqService(`ℹ️ GitHub event received: *${event}*`);
+            cliqService(`ℹ GitHub event received: *${event}*`);
         }
 
     } catch (err) {
-        console.error("❌ GitHub Event Handler Error:", err);
+        console.error(" GitHub Event Handler Error:", err);
     }
 }
