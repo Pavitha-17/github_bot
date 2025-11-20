@@ -1,20 +1,19 @@
-import axios from "axios";
-
-const sendCliqMessage = async (text) => {
+export default async function sendToCliq(text) {
     try {
-        await axios.post(
-            process.env.CLIQ_WEBHOOK_URL,
-            { text },
-            {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${process.env.CLIQ_BOT_TOKEN}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-    } catch (err) {
-        console.error("Error sending message to Cliq:", err.response?.data || err);
-    }
-};
+        console.log("➡ Sending message to Cliq...");
 
-export default sendCliqMessage;
+        const res = await fetch(process.env.CLIQ_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+        });
+
+        if (!res.ok) {
+            console.log("❌ Error sending to Cliq:", await res.text());
+        } else {
+            console.log("✅ Message sent to Cliq");
+        }
+    } catch (err) {
+        console.error("❌ Failed to send message:", err);
+    }
+}

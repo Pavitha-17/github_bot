@@ -1,28 +1,42 @@
-import sendCliqMessage from "./cliqService.js";
-import { commitMessageFormat, pullRequestFormat } from "../utils/formatMessage.js";
+import sendToCliq from "./cliqService.js";
 
-const handleGitHubEvent = async (eventType, payload) => {
+export default function handleGitHubEvent(event, payload) {
+    try {
+        console.log("📩 Handling GitHub Event:", event);
 
-    // ---- Commit Push Event ----
-    if (eventType === "push") {
-        const branch = payload.ref.replace("refs/heads/", "");
+        if (event === "push") {
+            const message = `🚀 *New Push Event*
 
-        // Only notify specific branch team
-        const allowedBranches = ["main", "dev", "feature"];
+*Repository:* ${payload.repository.full_name}
+*Pushed by:* ${payload.pusher.name}
+*Message:* ${payload.head_commit.message}
+*URL:* ${payload.head_commit.url}`;
 
-        if (!allowedBranches.includes(branch)) return;
+            sendToCliq(message);
+        }
 
-        const formatted = commitMessageFormat(payload);
-        await sendCliqMessage(formatted);
+        else if (event === "pull_request") {
+            const message = `🔀 *Pull Request Event*
+
+*Repository:* ${payload.repository.full_name}
+*Action:* ${payload.action}
+*Title:* ${payload.pull_request.title}
+*By:* ${payload.pull_request.user.login}
+*URL:* ${payload.pull_request.html_url}`;
+
+            sendToCliq(message);
+        }
+
+        else if (event === "ping") {
+            console.log("🟢 Ping event received");
+            sendToCliq("🔔 GitHub webhook connected successfully!");
+        }
+
+        else {
+            sendToCliq(`ℹ️ GitHub event received: *${event}*`);
+        }
+
+    } catch (err) {
+        console.error("❌ GitHub Event Handler Error:", err);
     }
-
-    // ---- Pull Request Event ----
-    if (eventType === "pull_request") {
-        const formatted = pullRequestFormat(payload);
-        await sendCliqMessage(formatted);
-    }
-
-    // ---- More GitHub events you can add later ----
-};
-
-export default handleGitHubEvent;
+}
