@@ -1,4 +1,4 @@
-import sendToCliq from "../services/cliqService";
+import cliqService from "../services/cliqService";
 
 export default function handleGitHubEvent(event, payload) {
     try {
@@ -12,7 +12,7 @@ export default function handleGitHubEvent(event, payload) {
 *Message:* ${payload.head_commit.message}
 *URL:* ${payload.head_commit.url}`;
 
-            sendToCliq(message);
+            cliqService(message);
         }
 
         else if (event === "pull_request") {
@@ -24,16 +24,16 @@ export default function handleGitHubEvent(event, payload) {
 *By:* ${payload.pull_request.user.login}
 *URL:* ${payload.pull_request.html_url}`;
 
-            sendToCliq(message);
+            cliqService(message);
         }
 
         else if (event === "ping") {
             console.log("🟢 Ping event received");
-            sendToCliq("🔔 GitHub webhook connected successfully!");
+            cliqService("🔔 GitHub webhook connected successfully!");
         }
 
         else {
-            sendToCliq(`ℹ️ GitHub event received: *${event}*`);
+            cliqService(`ℹ️ GitHub event received: *${event}*`);
         }
 
     } catch (err) {

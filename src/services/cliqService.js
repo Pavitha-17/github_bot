@@ -1,4 +1,4 @@
-export default async function sendToCliq(text) {
+export default async function cliqService(text) {
     try {
         console.log("➡ Sending message to Cliq...");
 
